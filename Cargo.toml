@@ -1,0 +1,15 @@
+[package]
+name = "frontier_user"
+version = "0.1.0"
+authors = ["Cimang Jiang <joshua.olin@163.com>"]
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+riscv = "0.11.1"
+buddy_system_allocator = "0.9.0"
+frontier_fs = { path = "../frontier_fs" }
+
+[profile.release]
+debug = true
