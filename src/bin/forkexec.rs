@@ -3,11 +3,10 @@
 
 #[macro_use]
 extern crate frontier_user;
-
-use frontier_user::{exec, fork, get_pid, wait};
+use frontier_user::{exec_without_args, fork, get_pid, wait};
 
 #[no_mangle]
-pub fn main() -> i32 {
+pub fn main(_: &str, _: &str) -> i32 {
     println!("pid {}: parent start forking ...", get_pid());
     let pid = fork();
     if pid == 0 {
@@ -16,7 +15,7 @@ pub fn main() -> i32 {
             "pid {}: forked child start execing hello_world app ... ",
             get_pid()
         );
-        exec("hello_world\0");
+        exec_without_args("hello_world\0");
         100
     } else {
         // parent process

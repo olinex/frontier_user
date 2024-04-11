@@ -3,11 +3,10 @@
 
 #[macro_use]
 extern crate frontier_user;
-
 use frontier_user::{get_time, sleep};
 
 #[no_mangle]
-pub fn main() -> i32 {
+pub fn main(_: &str, _: &str) -> i32 {
     println!("into sleep test!");
     let start = get_time();
     println!("current time_msec = {}", start);

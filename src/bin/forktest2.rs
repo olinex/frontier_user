@@ -3,13 +3,12 @@
 
 #[macro_use]
 extern crate frontier_user;
-
 use frontier_user::{exit, fork, get_time, get_pid, sleep, wait};
 
 static NUM: usize = 30;
 
 #[no_mangle]
-pub fn main() -> i32 {
+pub fn main(_: &str, _: &str) -> i32 {
     for _ in 0..NUM {
         let pid = fork();
         if pid == 0 {

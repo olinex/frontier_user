@@ -67,11 +67,21 @@ dependencies = [
 ]
 
 [[package]]
+name = "frontier_lib"
+version = "0.1.0"
+dependencies = [
+ "bitflags",
+ "enum-group",
+ "thiserror-no-std",
+]
+
+[[package]]
 name = "frontier_user"
 version = "0.1.0"
 dependencies = [
  "buddy_system_allocator",
  "frontier_fs",
+ "frontier_lib",
  "riscv",
 ]
 

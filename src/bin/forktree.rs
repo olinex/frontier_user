@@ -3,7 +3,6 @@
 
 #[macro_use]
 extern crate frontier_user;
-
 use frontier_user::{exit, fork, get_pid, sleep, yield_out};
 
 const DEPTH: usize = 4;
@@ -30,7 +29,7 @@ fn fork_tree(cur: &str) {
 }
 
 #[no_mangle]
-pub fn main() -> i32 {
+pub fn main(_: &str, _: &str) -> i32 {
     fork_tree("");
     sleep(3000);
     0

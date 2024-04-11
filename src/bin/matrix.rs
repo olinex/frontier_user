@@ -4,7 +4,6 @@
 
 #[macro_use]
 extern crate frontier_user;
-
 use frontier_user::{exit, fork, get_time, get_pid, wait, yield_out};
 
 static NUM: usize = 30;
@@ -46,7 +45,7 @@ fn work(times: isize) {
 }
 
 #[no_mangle]
-pub fn main() -> i32 {
+pub fn main(_: &str, _: &str) -> i32 {
     for _ in 0..NUM {
         let pid = fork();
         if pid == 0 {

@@ -3,12 +3,13 @@
 
 #[macro_use]
 extern crate frontier_user;
+
 use frontier_user::{exit, fork, wait, wait_pid, yield_out};
 
 const MAGIC: i32 = -0x10384;
 
 #[no_mangle]
-pub fn main() -> i32 {
+pub fn main(_: &str, _: &str) -> i32 {
     println!("I am the parent. Forking the child...");
     let pid = fork();
     if pid == 0 {

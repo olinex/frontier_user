@@ -6,7 +6,7 @@ extern crate frontier_user;
 use frontier_user::{get_pid, yield_out};
 
 #[no_mangle]
-pub fn main() -> i32 {
+pub fn main(_: &str, _: &str) -> i32 {
     println!("Hello, I am process {}.", get_pid());
     yield_out();
     println!("yield pass.");

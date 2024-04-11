@@ -3,11 +3,10 @@
 
 #[macro_use]
 extern crate frontier_user;
-
 use frontier_user::{fork, get_pid, wait};
 
 #[no_mangle]
-pub fn main() -> i32 {
+pub fn main(_: &str, _: &str) -> i32 {
     assert_eq!(wait(&mut 0i32), -1);
     println!("sys_wait without child process test passed!");
     println!("parent start, pid = {}!", get_pid());

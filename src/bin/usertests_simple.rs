@@ -18,15 +18,15 @@ static TESTS: &[&str] = &[
     "yield_out\0",
 ];
 
-use frontier_user::{exec, fork, wait_pid};
+use frontier_user::{exec_without_args, fork, wait_pid};
 
 #[no_mangle]
-pub fn main() -> i32 {
+pub fn main(_: &str, _: &str) -> i32 {
     for test in TESTS {
         println!("Usertests: Running {}", test);
         let pid = fork();
         if pid == 0 {
-            exec(*test);
+            exec_without_args(*test);
             panic!("unreachable!");
         } else {
             let mut exit_code: i32 = Default::default();

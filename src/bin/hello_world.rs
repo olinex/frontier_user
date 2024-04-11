@@ -5,7 +5,7 @@
 extern crate frontier_user;
 
 #[no_mangle]
-fn main() -> i32 {
+fn main(_: &str, _: &str) -> i32 {
     println!("Hello, world!");
     0
 }

@@ -7,8 +7,7 @@
 
 // use self mods
 
-pub mod ascii {
-    pub const NULL: u8 = 0x00;
+pub mod keycode {
     pub const LINE_FEED: u8 = 0x0a;
     pub const CARRIAGE_RETURN: u8 = 0x0d;
     pub const DELETE: u8 = 0x7f;
@@ -18,6 +17,18 @@ pub mod ascii {
     pub const UP_ARROW: u8 = 0x26;
     pub const RIGHT_ARROW: u8 = 0x27;
     pub const DOWN_ARROW: u8 = 0x28;
+}
+
+pub mod charater {
+    pub const SPACE: char = ' ';
+    pub const NULL: char = '\0';
+    pub const GT: char = '>';
+    pub const LT: char = '<';
+}
+
+pub mod shortcut {
+    pub const NULL: &'static str = "\0"; 
+    pub const EMPTY: &'static str = "";
 }
 
 pub mod descriptor {

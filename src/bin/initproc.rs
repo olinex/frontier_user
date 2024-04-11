@@ -1,25 +1,25 @@
 #![no_std]
 #![no_main]
 
-#[macro_use]
-extern crate frontier_user;
-
 // @author:    olinex
 // @time:      2023/10/08
+
+#[macro_use]
+extern crate frontier_user;
 
 // self mods
 
 // use other mods
-use frontier_user::{exec, fork, wait, yield_out};
+use frontier_user::{exec_without_args, fork, wait, yield_out};
 
 // use self mods
 
 #[no_mangle]
-fn main() -> i32 {
+fn main(_: &str, _: &str) -> i32 {
     match fork() {
         0 => {
             println!("[initproc] Creating a simple shell process...");
-            exec("core_shell\0");
+            exec_without_args("core_shell\0");
         }
         _ => loop {
             let mut exit_code: i32 = 0;

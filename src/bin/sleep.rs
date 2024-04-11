@@ -3,7 +3,6 @@
 
 #[macro_use]
 extern crate frontier_user;
-
 use frontier_user::{exit, fork, get_time, sleep, wait_pid};
 
 fn sleepy() {
@@ -16,7 +15,7 @@ fn sleepy() {
 }
 
 #[no_mangle]
-pub fn main() -> i32 {
+pub fn main(_: &str, _: &str) -> i32 {
     let current_time = get_time();
     let pid = fork();
     let mut exit_code: i32 = 0;

@@ -4,10 +4,17 @@
 // self mods
 
 // use other mods
+use core::ptr::{null, null_mut};
 use frontier_fs::OpenFlags;
+use frontier_lib::model::signal::{Signal, SignalAction, SignalFlags};
 
 // use self mods
 use crate::syscall::*;
+
+#[inline(always)]
+pub fn dup(fd: usize) -> isize {
+    sys_dup(fd)
+}
 
 #[inline(always)]
 pub fn open(path: &str, flags: OpenFlags) -> isize {
@@ -17,6 +24,11 @@ pub fn open(path: &str, flags: OpenFlags) -> isize {
 #[inline(always)]
 pub fn close(fd: usize) -> isize {
     sys_close(fd)
+}
+
+#[inline(always)]
+pub fn pipe(read_tap_fd: &mut usize, write_tap_fd: &mut usize) -> isize {
+    sys_pipe(read_tap_fd, write_tap_fd)
 }
 
 #[inline(always)]
@@ -55,8 +67,13 @@ pub fn fork() -> isize {
 }
 
 #[inline(always)]
-pub fn exec(path: &str) -> isize {
-    sys_exec(path)
+pub fn exec(path: &str, args: &str) -> isize {
+    sys_exec(path, args)
+}
+
+#[inline(always)]
+pub fn exec_without_args(path: &str) -> isize {
+    sys_exec(path, "\0")
 }
 
 pub fn wait(exit_code: &mut i32) -> isize {
@@ -88,4 +105,28 @@ pub fn sleep(period_ms: usize) {
     while sys_get_time() < start + period_ms as isize {
         sys_yield();
     }
+}
+
+pub fn kill(pid: usize, signal: Signal) -> isize {
+    sys_kill(pid, signal)
+}
+
+pub fn sig_action(
+    signal: Signal,
+    new_action: Option<&SignalAction>,
+    old_action: Option<&mut SignalAction>,
+) -> isize {
+    sys_sig_action(
+        signal,
+        new_action.map_or(null(), |a| a),
+        old_action.map_or(null_mut(), |a| a),
+    )
+}
+
+pub fn sig_proc_mask(mask: SignalFlags) -> isize {
+    sys_sig_proc_mask(mask)
+}
+
+pub fn sig_return() -> isize {
+    sys_sig_return()
 }
