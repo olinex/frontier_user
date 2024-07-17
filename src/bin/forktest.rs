@@ -3,7 +3,7 @@
 
 #[macro_use]
 extern crate frontier_user;
-use frontier_user::{exit, fork, wait};
+use frontier_user::{exit, fork, wait_any_pid};
 
 const MAX_CHILD: usize = 30;
 
@@ -21,11 +21,11 @@ pub fn main(_: &str, _: &str) -> i32 {
     }
     let mut exit_code: i32 = 0;
     for _ in 0..MAX_CHILD {
-        if wait(&mut exit_code) <= 0 {
+        if wait_any_pid(&mut exit_code) <= 0 {
             panic!("wait stopped early");
         }
     }
-    if wait(&mut exit_code) > 0 {
+    if wait_any_pid(&mut exit_code) > 0 {
         panic!("wait got too many");
     }
     println!("forktest pass.");

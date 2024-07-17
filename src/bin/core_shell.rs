@@ -52,8 +52,8 @@ fn dup_file(path: &str, flags: OpenFlags, close_fd: usize) -> Option<isize> {
 
 fn ensure_command(main_line: &mut String) -> Option<isize> {
     let result = match main_line.as_str() {
+        "exit" => exit(0),
         shortcut::EMPTY => None,
-        "exit" => Some(exit(0)),
         other => {
             let pid = fork();
             if pid == 0 {

@@ -4,7 +4,7 @@
 
 #[macro_use]
 extern crate frontier_user;
-use frontier_user::{exit, fork, get_time, get_pid, wait, yield_out};
+use frontier_user::{exit, fork, get_time, get_pid, wait_any_pid, yield_out};
 
 static NUM: usize = 30;
 const N: usize = 10;
@@ -59,11 +59,11 @@ pub fn main(_: &str, _: &str) -> i32 {
 
     let mut exit_code: i32 = 0;
     for _ in 0..NUM {
-        if wait(&mut exit_code) < 0 {
+        if wait_any_pid(&mut exit_code) < 0 {
             panic!("wait failed.");
         }
     }
-    assert!(wait(&mut exit_code) < 0);
+    assert!(wait_any_pid(&mut exit_code) < 0);
     println!("matrix passed.");
     0
 }

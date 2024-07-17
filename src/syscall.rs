@@ -67,13 +67,19 @@ pub fn sys_write(fd: usize, buffer: &[u8]) -> isize {
 }
 
 #[inline(always)]
-pub fn sys_exit(exit_code: i32) -> isize {
-    syscall(sysid::EXIT, [exit_code as usize, 0, 0])
+pub fn sys_exit(exit_code: i32) -> ! {
+    syscall(sysid::EXIT, [exit_code as usize, 0, 0]);
+    unreachable!()
 }
 
 #[inline(always)]
 pub fn sys_yield() -> isize {
     syscall(sysid::YIELD, [0, 0, 0])
+}
+
+#[inline(always)]
+pub fn sys_sleep(period_us: usize) -> isize {
+    syscall(sysid::SLEEP, [period_us, 0, 0])
 }
 
 #[inline(always)]
@@ -132,4 +138,70 @@ pub fn sys_sig_proc_mask(mask: SignalFlags) -> isize {
 #[inline(always)]
 pub fn sys_sig_return() -> isize {
     syscall(sysid::SIG_RETURN, [0, 0, 0])
+}
+
+#[inline(always)]
+pub fn sys_thread_create(entry_point: usize, arg: usize) -> isize {
+    syscall(sysid::THREAD_CREATE, [entry_point, arg, 0])
+}
+
+#[inline(always)]
+pub fn sys_get_tid() -> isize {
+    syscall(sysid::GET_TID, [0, 0, 0])
+}
+
+#[inline(always)]
+pub fn sys_wait_tid(tid: isize, exit_code: &mut i32) -> isize {
+    syscall(
+        sysid::WAIT_TID,
+        [tid as usize, exit_code as *mut i32 as usize, 0],
+    )
+}
+
+#[inline(always)]
+pub fn sys_create_mutex(blocking: bool) -> isize {
+    syscall(sysid::MUTEX_CREATE, [blocking as usize, 0, 0])
+}
+
+#[inline(always)]
+pub fn sys_lock_mutex(id: usize) -> isize {
+    syscall(sysid::MUTEX_LOCK, [id, 0, 0])
+}
+
+#[inline(always)]
+pub fn sys_unlock_mutex(id: usize) -> isize {
+    syscall(sysid::MUTEX_UNLOCK, [id, 0, 0])
+}
+
+#[inline(always)]
+pub fn sys_create_semaphore(blocking: bool, count: isize) -> isize {
+    syscall(
+        sysid::SEMAPHORE_CREATE,
+        [blocking as usize, count as usize, 0],
+    )
+}
+
+#[inline(always)]
+pub fn sys_up_semaphore(id: usize) -> isize {
+    syscall(sysid::SEMAPHORE_UP, [id, 0, 0])
+}
+
+#[inline(always)]
+pub fn sys_down_semaphore(id: usize) -> isize {
+    syscall(sysid::SEMAPHORE_DOWN, [id, 0, 0])
+}
+
+#[inline(always)]
+pub fn sys_create_condvar() -> isize {
+    syscall(sysid::CONDVAR_CREATE, [0, 0, 0])
+}
+
+#[inline(always)]
+pub fn sys_signal_condvar(id: usize) -> isize {
+    syscall(sysid::CONDVAR_SIGNAL, [id, 0, 0])
+}
+
+#[inline(always)]
+pub fn sys_wait_condvar(id: usize, mutex_id: usize) -> isize {
+    syscall(sysid::CONDVAR_WAIT, [id, mutex_id, 0])
 }

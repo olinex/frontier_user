@@ -30,6 +30,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "cfg-if"
+version = "1.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "baf1de4339761588bc0619e3cbc0120ee582ebb74b53b4efbf79117bd2da40fd"
+
+[[package]]
 name = "critical-section"
 version = "1.1.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -80,8 +86,10 @@ name = "frontier_user"
 version = "0.1.0"
 dependencies = [
  "buddy_system_allocator",
+ "cfg-if",
  "frontier_fs",
  "frontier_lib",
+ "lazy_static",
  "riscv",
 ]
 

@@ -3,11 +3,11 @@
 
 #[macro_use]
 extern crate frontier_user;
-use frontier_user::{fork, get_pid, wait};
+use frontier_user::{fork, get_pid, wait_any_pid};
 
 #[no_mangle]
 pub fn main(_: &str, _: &str) -> i32 {
-    assert_eq!(wait(&mut 0i32), -1);
+    assert_eq!(wait_any_pid(&mut 0i32), -1);
     println!("sys_wait without child process test passed!");
     println!("parent start, pid = {}!", get_pid());
     let pid = fork();
@@ -19,7 +19,7 @@ pub fn main(_: &str, _: &str) -> i32 {
         // parent process
         let mut exit_code: i32 = 0;
         println!("ready waiting on parent process!");
-        assert_eq!(pid, wait(&mut exit_code));
+        assert_eq!(pid, wait_any_pid(&mut exit_code));
         assert_eq!(exit_code, 100);
         println!("child process pid = {}, exit code = {}", pid, exit_code);
         0

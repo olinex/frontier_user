@@ -4,7 +4,7 @@
 #[macro_use]
 extern crate frontier_user;
 
-use frontier_user::{exit, fork, wait, wait_pid, yield_out};
+use frontier_user::{exit, fork, wait_any_pid, wait_pid, yield_out};
 
 const MAGIC: i32 = -0x10384;
 
@@ -24,7 +24,7 @@ pub fn main(_: &str, _: &str) -> i32 {
     println!("I am the parent, waiting now..");
     let mut xstate: i32 = 0;
     assert!(wait_pid(pid as usize, &mut xstate) == pid && xstate == MAGIC);
-    assert!(wait_pid(pid as usize, &mut xstate) < 0 && wait(&mut xstate) <= 0);
+    assert!(wait_pid(pid as usize, &mut xstate) < 0 && wait_any_pid(&mut xstate) <= 0);
     println!("waitpid {} ok.", pid);
     println!("exit pass.");
     0

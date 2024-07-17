@@ -54,8 +54,7 @@ pub extern "C" fn _start(count: usize, base_addr: usize) -> ! {
     clear_bss();
     heap::init_heap();
     let (path, args) = convert_to_str(count, base_addr);
-    exit(main(path, args));
-    panic!("unreachable after sys_exit!");
+    exit(main(path, args))
 }
 
 #[linkage = "weak"]

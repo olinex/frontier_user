@@ -3,7 +3,7 @@
 
 #[macro_use]
 extern crate frontier_user;
-use frontier_user::{exit, fork, get_time, get_pid, sleep, wait};
+use frontier_user::{exit, fork, get_time, get_pid, sleep, wait_any_pid};
 
 static NUM: usize = 30;
 
@@ -24,10 +24,10 @@ pub fn main(_: &str, _: &str) -> i32 {
 
     let mut exit_code: i32 = 0;
     for _ in 0..NUM {
-        assert!(wait(&mut exit_code) > 0);
+        assert!(wait_any_pid(&mut exit_code) > 0);
         assert_eq!(exit_code, 0);
     }
-    assert!(wait(&mut exit_code) < 0);
+    assert!(wait_any_pid(&mut exit_code) < 0);
     println!("forktest2 test passed!");
     0
 }

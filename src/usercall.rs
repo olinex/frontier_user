@@ -42,7 +42,7 @@ pub fn write(fd: usize, buf: &[u8]) -> isize {
 }
 
 #[inline(always)]
-pub fn exit(exit_code: i32) -> isize {
+pub fn exit(exit_code: i32) -> ! {
     sys_exit(exit_code)
 }
 
@@ -76,7 +76,7 @@ pub fn exec_without_args(path: &str) -> isize {
     sys_exec(path, "\0")
 }
 
-pub fn wait(exit_code: &mut i32) -> isize {
+pub fn wait_any_pid(exit_code: &mut i32) -> isize {
     loop {
         match sys_wait_pid(-1, exit_code) {
             -2 => {
@@ -100,11 +100,12 @@ pub fn wait_pid(pid: usize, exit_code: &mut i32) -> isize {
     }
 }
 
-pub fn sleep(period_ms: usize) {
-    let start = sys_get_time();
-    while sys_get_time() < start + period_ms as isize {
-        sys_yield();
-    }
+pub fn wait_pid_no_pause(pid: usize, exit_code: &mut i32) -> isize {
+    sys_wait_pid(pid as isize, exit_code)
+}
+
+pub fn sleep(period_us: usize) -> isize {
+    sys_sleep(period_us)
 }
 
 pub fn kill(pid: usize, signal: Signal) -> isize {
@@ -129,4 +130,72 @@ pub fn sig_proc_mask(mask: SignalFlags) -> isize {
 
 pub fn sig_return() -> isize {
     sys_sig_return()
+}
+
+pub fn thread_create(entry_point: usize, arg: usize) -> isize {
+    sys_thread_create(entry_point, arg)
+}
+
+pub fn get_tid() -> isize {
+    sys_get_tid()
+}
+
+pub fn wait_any_tid(exit_code: &mut i32) -> isize {
+    loop {
+        match sys_wait_tid(-1, exit_code) {
+            -2 => {
+                yield_out();
+            }
+            // -1 or a real pid
+            exit_tid => return exit_tid,
+        }
+    }
+}
+
+pub fn wait_tid(tid: usize, exit_code: &mut i32) -> isize {
+    loop {
+        match sys_wait_tid(tid as isize, exit_code) {
+            -2 => {
+                yield_out();
+            }
+            // -1 or a real pid
+            exit_tid => return exit_tid,
+        }
+    }
+}
+
+pub fn create_mutex(blocking: bool) -> isize {
+    sys_create_mutex(blocking)
+}
+
+pub fn lock_mutex(id: usize) -> isize {
+    sys_lock_mutex(id)
+}
+
+pub fn unlock_mutex(id: usize) -> isize {
+    sys_unlock_mutex(id)
+}
+
+pub fn create_semaphore(blocking: bool, count: isize) -> isize {
+    sys_create_semaphore(blocking, count)
+}
+
+pub fn up_semaphore(id: usize) -> isize {
+    sys_up_semaphore(id)
+}
+
+pub fn down_semaphore(id: usize) -> isize {
+    sys_down_semaphore(id)
+}
+
+pub fn create_condvar() -> isize {
+    sys_create_condvar()
+}
+
+pub fn signal_condvar(id: usize) -> isize {
+    sys_signal_condvar(id)
+}
+
+pub fn wait_condvar(id: usize, mutex_id: usize) -> isize {
+    sys_wait_condvar(id, mutex_id)
 }

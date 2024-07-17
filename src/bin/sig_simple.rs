@@ -24,7 +24,9 @@ pub fn main() -> i32 {
         panic!("Sigaction failed!");
     }
     println!("signal_simple: kill");
-    if kill(get_pid() as usize, Signal::USR1) < 0 {
+    let pid = get_pid() as usize;
+    println!("signal_simple: get self pid: {}", pid);
+    if kill(pid, Signal::USR1) < 0 {
         println!("Kill failed!");
         exit(1);
     }

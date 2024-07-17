@@ -9,11 +9,11 @@ use frontier_user::{get_time, sleep};
 pub fn main(_: &str, _: &str) -> i32 {
     println!("into sleep test!");
     let start = get_time();
-    println!("current time_msec = {}", start);
-    sleep(100);
+    println!("current time_microseconds = {}", start);
+    sleep(10000);
     let end = get_time();
     println!(
-        "time_msec = {} after sleeping 100 ticks, delta = {}ms!",
+        "microseconds = {} after sleeping 100 ticks, delta = {}us!",
         end,
         end - start
     );
